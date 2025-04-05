@@ -1,25 +1,44 @@
+<!-- templates/dashboard.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Analysis Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Model Evaluation Results</h1>
-        <h2>Accuracy: {{ accuracy }}%</h2>
+  <h1>📊 Model Evaluation Dashboard</h1>
 
-        <h3>Confusion Matrix:</h3>
-        <table>
-            {% for row in conf_matrix %}
-                <tr>
-                    {% for cell in row %}
-                        <td>{{ cell }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
+  {% if results %}
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Accuracy (%)</th>
+          <th>Precision</th>
+          <th>Recall</th>
+          <th>F1 Score</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for res in results %}
+          <tr>
+            <td>{{ res.model }}</td>
+            <td>{{ res.accuracy }}</td>
+            <td>{{ res.precision }}</td>
+            <td>{{ res.recall }}</td>
+            <td>{{ res.f1 }}</td>
+            <td><a href="{{ url_for('details', id=res.id) }}">View Details</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+  <a href="{{ url_for('reset') }}" onclick="return confirm('Are you sure you want to clear all results?');">🗑️ Reset Results</a>
+
+    <p>No evaluations yet.</p>
+  {% endif %}
+
+  <a href="{{ url_for('index') }}">⬅ Back</a>
 </body>
 </html>
- 

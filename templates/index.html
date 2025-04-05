@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Model Evaluation</title>
+    <title>AI Model Evaluator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Upload Model & Data</h1>
-        <form action="/analyze" method="post" enctype="multipart/form-data">
-            <label>Pickle Model (.pkl):</label><br>
-            <input type="file" name="model" required><br><br>
+        <h1>AI Model Evaluator</h1>
 
-            <label>Dataset (.csv):</label><br>
-            <input type="file" name="dataset" required><br><br>
+        <!-- Flash Message Display -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Upload + Model Form -->
+        <form action="{{ url_for('analyze') }}" method="POST" enctype="multipart/form-data">
+            <label for="dataset">Upload Dataset (CSV):</label>
+            <input type="file" id="dataset" name="dataset" required accept=".csv">
+
+            <label for="model">Select Model:</label>
+            <select id="model" name="model" required>
+                <option value="KMeans">K-Means</option>
+                <option value="LogisticRegression">Logistic Regression</option>
+                <option value="SVC">Support Vector Machine</option>
+                <option value="DecisionTree">Decision Tree</option>
+                <option value="RandomForest">Random Forest</option>
+                <option value="NaiveBayes">Naive Bayes</option>
+            </select>
 
             <button type="submit">Analyze</button>
         </form>
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
+
+        <hr>
+
+        <!-- Link to Dashboard -->
+        <a href="{{ url_for('dashboard') }}" class="dashboard-link">📊 View Dashboard</a>
     </div>
 </body>
 </html>

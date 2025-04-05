@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Model Details - {{ result.model }}</h1>
+
+        <p><strong>Accuracy:</strong> {{ result.accuracy }}%</p>
+        <p><strong>Precision:</strong> {{ result.precision }}%</p>
+        <p><strong>Recall:</strong> {{ result.recall }}%</p>
+        <p><strong>F1 Score:</strong> {{ result.f1 }}%</p>
+
+        <h2>Confusion Matrix</h2>
+        <img src="{{ url_for('static', filename=result.confusion_plot) }}" alt="Confusion Matrix">
+
+        {% if result.scatter_plot %}
+            <h2>Data Scatter Plot</h2>
+            <img src="{{ url_for('static', filename=result.scatter_plot) }}" alt="Data Scatter Plot">
+        {% endif %}
+
+        <a href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+    </div>
+</body>
+</html>
